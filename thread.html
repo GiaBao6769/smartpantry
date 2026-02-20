@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Pantry – Thread chat</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .thread-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .thread-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .back-link {
+            color: #2e7d32;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+        .messages-container {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,40,0,0.08);
+            min-height: 400px;
+            max-height: 600px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+        }
+        .message {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .message.user {
+            flex-direction: row-reverse;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .bubble {
+            background: #f0f7f0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 20px;
+            max-width: 70%;
+            white-space: pre-wrap;
+        }
+        .message.user .bubble {
+            background: #2e7d32;
+            color: white;
+        }
+        .input-area {
+            display: flex;
+            gap: 1rem;
+        }
+        .input-area textarea {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #d0e0d0;
+            border-radius: 12px;
+            resize: none;
+        }
+        .input-area button {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        .btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar"></header>
+
+    <main class="thread-container">
+        <div class="thread-header">
+            <a href="chat.html" class="back-link">← Quay lại</a>
+            <h2 id="thread-title"></h2>
+        </div>
+
+        <div id="messages-container" class="messages-container">
+            <!-- Các message sẽ được render ở đây -->
+        </div>
+
+        <div class="input-area">
+            <textarea id="message-input" placeholder="Nhập tin nhắn..."></textarea>
+            <button id="send-message-btn">Gửi</button>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+     
+    <div id="login-modal" class="modal"></div>
+    <div id="register-modal" class="modal"></div>
+
+    
+</body>
+<script type="module" src="main.js"></script>
+<script src="thread.js"></script>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Pantry – Handbook</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .handbook-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .handbook-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .tabs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .tab-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,40,0,0.08);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .tab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,40,0,0.12);
+        }
+        .tab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tab-header h3 {
+            margin: 0;
+            color: #1b3b1b;
+            font-size: 1.2rem;
+        }
+        .tab-actions {
+            display: flex;
+            gap: 0.3rem;
+        }
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0.2rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .icon-btn:hover {
+            background: #e8f5e9;
+        }
+        .tab-card p {
+            color: #4a6b4a;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .create-tab-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-top: 2rem;
+        }
+        .btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-secondary {
+            background: #fff0e0;
+            color: #b45f2e;
+            border: 1px solid #ffb57c;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #d0e0d0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar"></header>
+
+    <main class="handbook-container">
+        <div class="handbook-header">
+            <h2>📘 Cẩm nang dinh dưỡng</h2>
+            <button id="new-tab-btn" class="btn">➕ Tạo tab mới</button>
+        </div>
+
+        <div id="tabs-grid" class="tabs-grid">
+            <!-- Các tab sẽ được render ở đây -->
+        </div>
+
+        <!-- Form tạo tab -->
+        <div id="create-tab-form" class="create-tab-form" style="display: none;">
+            <h3>Tạo tab mới</h3>
+            <div class="form-group">
+                <label>Tên tab</label>
+                <input type="text" id="new-tab-name" placeholder="VD: Thực đơn tuần 1">
+            </div>
+            <div class="btn-group">
+                <button id="submit-tab" class="btn">Tạo</button>
+                <button id="cancel-tab" class="btn btn-secondary">Hủy</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal (copy từ index.html) -->
+    <div id="login-modal" class="modal"></div>
+    <div id="register-modal" class="modal"></div>
+
+    
+</body>
+
+<script type="module" src="main.js"></script>
+<script type="module" src="handbook.js"></script>
+
+</html>

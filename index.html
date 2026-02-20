@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Pantry – Trợ lý dinh dưỡng xanh</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar"></header>
+
+    <main class="container">
+        <div class="hero">
+            <h1>What do you want to make today?</h1>
+            <div class="input-group">
+                <input type="text" id="ingredient-input" placeholder="e.g. chicken, potato, eggs, spinach..." value="chicken, potato">
+                <button id="send-btn">→</button>
+            </div>
+            <div class="scan-area">
+                <button id="scan-btn" class="scan-btn">📷 Chụp ảnh tủ lạnh / hoá đơn</button>
+                <input type="file" id="image-input" accept="image/*" capture="environment" style="display: none;">
+                <div id="image-preview-container" style="display: none;">
+                    <img id="image-preview" src="#" alt="Preview">
+                    <button id="clear-image-btn">✕</button>
+                    <p id="detected-ingredients"></p>
+                </div>
+            </div>
+            <div class="goal-selector">
+                <span class="goal-label">🎯 Mục tiêu:</span>
+                <button class="goal-btn active" data-goal="weight-loss">Giảm cân (Low Carb)</button>
+                <button class="goal-btn" data-goal="muscle-gain">Tăng cơ (High Protein)</button>
+                <button class="goal-btn" data-goal="maintenance">Duy trì năng lượng</button>
+                <button class="goal-btn" data-goal="vitamin-c">💊 Bổ sung vitamin C</button>
+            </div>
+            <input type="hidden" id="current-goal" value="weight-loss">
+            <div class="suggestions">
+                <button class="chip">🍲 What to make from leftover ingredients?</button>
+                <span class="hint">You can ask about food nutrients, diet plan, and more!</span>
+            </div>
+        </div>
+        <div id="chat-container" class="chat">
+            <div class="message assistant">
+                <div class="avatar">🌿</div>
+                <div class="bubble">
+                    <strong>Xin chào! Tôi là Fit‑Chef.</strong><br>
+                    Hãy nhập nguyên liệu (hoặc chụp ảnh tủ lạnh) và chọn mục tiêu – tôi sẽ tạo công thức phù hợp.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal"></div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal"></div>
+
+    
+
+    
+</body>
+
+<script type="module" src="main.js"></script>
+<script type="module" src="script.js"></script>
+
+</html>

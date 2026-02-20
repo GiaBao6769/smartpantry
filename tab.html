@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Pantry – Chi tiết tab</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tab-detail-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .tab-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .back-link {
+            color: #2e7d32;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+        .blocks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .block-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,40,0,0.08);
+        }
+        .block-day {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #1b3b1b;
+            border-bottom: 2px solid #e0f0e0;
+            padding-bottom: 0.5rem;
+        }
+        .meal-item {
+            margin: 0.8rem 0;
+        }
+        .meal-label {
+            font-weight: 600;
+            color: #2e7d32;
+            display: inline-block;
+            width: 70px;
+        }
+        .ingredient-list {
+            margin-left: 70px;
+            color: #3a553a;
+            font-size: 0.9rem;
+        }
+        .ingredient-list span {
+            display: inline-block;
+            background: #e8f5e9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            margin: 0.2rem 0.2rem;
+        }
+        .add-block-form {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        .btn-secondary {
+            background: #fff0e0;
+            color: #b45f2e;
+            border: 1px solid #ffb57c;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #d0e0d0;
+            border-radius: 10px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar"></header>
+
+    <main class="tab-detail-container">
+        <div class="tab-header">
+            <a href="handbook.html" class="back-link">← Quay lại</a>
+            <h2 id="tab-name"></h2>
+        </div>
+
+        <div id="blocks-list" class="blocks-grid">
+            <!-- Blocks sẽ được render ở đây -->
+        </div>
+
+        <!-- Form thêm block -->
+        <div id="add-block-form" class="add-block-form" style="display: none;">
+            <h3>Thêm bữa ăn mới</h3>
+            <div class="form-group">
+                <label>Tên ngày</label>
+                <input type="text" id="block-day" placeholder="VD: Thứ Hai">
+            </div>
+            <div class="form-group">
+                <label>Bữa sáng</label>
+                <textarea id="block-breakfast" placeholder="Phở bò: 1 tô, Sữa: 1 ly"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Bữa trưa</label>
+                <textarea id="block-lunch" placeholder="Cơm gà: 1 suất, Rau luộc: 100g"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Bữa tối</label>
+                <textarea id="block-dinner" placeholder="Cá hồi: 150g, Khoai tây: 1 củ"></textarea>
+            </div>
+            <div class="btn-group">
+                <button id="submit-block" class="btn">Thêm</button>
+                <button id="cancel-block" class="btn btn-secondary">Hủy</button>
+            </div>
+        </div>
+        <button id="show-add-block" class="btn" style="margin-top: 1rem;">➕ Thêm bữa ăn</button>
+    </main>
+
+    <div id="login-modal" class="modal"></div>
+    <div id="register-modal" class="modal"></div>
+
+    
+</body>
+<script type="module"  src="main.js"></script>
+<script src="tab.js"></script>
+</html>

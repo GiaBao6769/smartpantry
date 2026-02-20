@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<body>
+    
+<template id="NAVBAR-TEMP">
+    <div class="logo"><a href="index.html">🌿 Smart Pantry</a></div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="handbook.html">Handbook</a>
+        <a href="chatbot.html">Chatbot</a>
+        <!-- <a href="#">Features</a>
+        <a href="#">Generate images</a>
+        <a href="#">Your health status</a> -->
+    </nav>
+    <div class="user-menu">
+        <span id="user-greeting" style="display: none;">👤 <span id="username-display"></span></span>
+        <button id="login-btn" class="auth-btn">Đăng nhập</button>
+        <button id="register-btn" class="auth-btn">Đăng ký</button>
+        <button id="logout-btn" style="display: none;">Đăng xuất</button>
+    </div>
+
+
+</template>
+
+
+<template id="LOGIN-MODAL-TEMP">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Đăng nhập</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label>Tên đăng nhập</label>
+                <input type="text" name="username" required>
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="password" name="password" required>
+            </div>
+            <div id="login-error" class="error"></div>
+            <button type="submit" class="modal-button">Đăng nhập</button>
+        </form>
+    </div>
+</template>
+
+
+<template id="REGISTER-MODAL-TEMP">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Đăng ký</h2>
+        <form id="register-form">
+            <div class="form-group">
+                <label>Tên đăng nhập (3-10 ký tự, chữ và số)</label>
+                <input type="text" name="username" pattern="[a-zA-Z0-9]{3,10}" required>
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu (8-50 ký tự)</label>
+                <input type="password" name="password" minlength="8" maxlength="50" required>
+            </div>
+            <div id="register-error" class="error"></div>
+            <button type="submit" class="modal-button">Đăng ký</button>
+        </form>
+    </div>
+</template>
+
+</body>
+</html>

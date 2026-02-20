@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "title": "💪 Thực đơn tăng cơ 7 ngày",
+        "description": "Thực đơn giàu protein, ít béo, phù hợp cho người tập gym. Bao gồm ức gà, trứng, bông cải xanh, yến mạch...",
+        "calories": "2200 kcal/ngày",
+        "protein": "140g",
+        "carbs": "200g",
+        "fat": "50g",
+        "image": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400"
+    },
+    {
+        "id": 2,
+        "title": "🥗 Thực đơn giảm cân Low Carb",
+        "description": "Giảm tinh bột, tăng chất xơ. Các món: salad ức gà, cá hồi nướng, rau củ luộc.",
+        "calories": "1500 kcal/ngày",
+        "protein": "100g",
+        "carbs": "80g",
+        "fat": "70g",
+        "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400"
+    },
+    {
+        "id": 3,
+        "title": "🍊 Thực đơn tăng vitamin C",
+        "description": "Tăng cường đề kháng: cam, bưởi, ớt chuông, súp lơ, kiwi.",
+        "calories": "1800 kcal/ngày",
+        "protein": "90g",
+        "carbs": "220g",
+        "fat": "45g",
+        "image": "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400"
+    }
+]
