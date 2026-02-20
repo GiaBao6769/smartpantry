@@ -32,7 +32,11 @@ async function loadTab() {
         const tab = data.tab;
         tabNameEl.textContent = tab.name;
 
-        const blocksRes = await fetch(`${API_BASE}/api/tab/${tab.id}/blocks`);
+        const blocksRes = await fetch(`${API_BASE}/api/tab/${tab.id}/blocks`, 
+            {
+                method: "GET",
+                credentials: "include"
+            });
         const blocksData = await blocksRes.json();
         const blocks = blocksData.blocks;
         renderBlocks(blocks);

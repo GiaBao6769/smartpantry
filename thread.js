@@ -28,7 +28,11 @@ async function loadThread() {
         const thread = data.thread;
         threadTitle.textContent = thread.name;
 
-        const chatsRes = await fetch(`${API_BASE}/api/thread/${threadId}/chats`)
+        const chatsRes = await fetch(`${API_BASE}/api/thread/${threadId}/chats`, 
+            {
+                method: "GET",
+                credentials: "include"
+            });
         const chatsData = await chatsRes.json();
         renderChats(chatsData.chats);
 
