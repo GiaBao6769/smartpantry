@@ -72,9 +72,12 @@ const closeButtons = document.querySelectorAll('.close');
 // ==================== AUTH ====================
     async function checkAuth() {
         try {
-            const response = await fetch(`${API_BASE}/api/me`, { credentials: "include" });
+            const response = await fetch(`${API_BASE}/api/me`, 
+                { credentials: "include" }
+            );
             if (response.ok) {
                 const data = await response.json();
+                
                 if (data.user) {
                     userGreeting.style.display = 'inline';
                     usernameDisplay.textContent = data.user.username;
@@ -93,8 +96,15 @@ const closeButtons = document.querySelectorAll('.close');
         }
     }
 
-    loginBtn.addEventListener('click', () => loginModal.style.display = 'flex');
-    registerBtn.addEventListener('click', () => registerModal.style.display = 'flex');
+    loginModal.style.display = 'none';
+    registerModal.style.display = 'none';
+
+    loginBtn.addEventListener('click', () => {
+        if (loginModal) loginModal.style.display = 'flex';
+    });
+    registerBtn.addEventListener('click', () => {
+        if (registerModal) registerModal.style.display = 'flex';
+    });
 
     closeButtons.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -170,6 +180,4 @@ const closeButtons = document.querySelectorAll('.close');
         await fetch(`${API_BASE}/api/logout`, { method: 'POST', credentials: "include" });
         checkAuth();
     });
-
-    checkAuth();
 }

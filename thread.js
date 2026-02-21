@@ -1,7 +1,4 @@
-// ==================== CONFIG ====================
-const API_BASE = location.hostname === "localhost" || location.hostname === "127.0.0.1"
-    ? "http://localhost:3000"
-    : "https://my-backend.onrender.com";
+import { API_BASE } from "./main.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const threadId = urlParams.get('id');
