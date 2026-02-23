@@ -6,7 +6,6 @@ const sendBtn = document.getElementById('send-btn');
 const chatContainer = document.getElementById('chat-container');
 const goalBtns = document.querySelectorAll('.goal-btn');
 const currentGoal = document.getElementById('current-goal');
-const leftoverChip = document.querySelector('.chip');
 const scanBtn = document.getElementById('scan-btn');
 const imageInput = document.getElementById('image-input');
 const imagePreviewContainer = document.getElementById('image-preview-container');
@@ -16,11 +15,10 @@ const detectedIngredientsP = document.getElementById('detected-ingredients');
 
 
 // ==================== STATE ====================
-let currentImageBase64 = null;
+// (No state needed)
 
 // ==================== INIT ====================
-document.querySelector('[data-goal="weight-loss"]').classList.add('active');
-currentGoal.value = 'weight-loss';
+currentGoal.value = ''; // No default goal
 
 
 
@@ -28,8 +26,15 @@ currentGoal.value = 'weight-loss';
 goalBtns.forEach(btn => {
     btn.addEventListener('click', function() {
         goalBtns.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        currentGoal.value = this.dataset.goal;
+        
+        // If clicking an already active button, deselect it
+        if (this.classList.contains('active')) {
+            this.classList.remove('active');
+            currentGoal.value = '';
+        } else {
+            this.classList.add('active');
+            currentGoal.value = this.dataset.goal;
+        }
     });
 });
 
@@ -37,38 +42,94 @@ goalBtns.forEach(btn => {
 async function sendMessage() {
     const ingredients = ingredientInput.value.trim();
     const goal = currentGoal.value;
+    const images = Array.from(imageInput.files).slice(0, 3); // limit to 3 images
     
-    let userMessage = `Tôi có: ${ingredients || "không có nguyên liệu"}\nMục tiêu: ${getGoalName(goal)}`;
-    if (currentImageBase64) {
-        userMessage += `\n[Kèm ảnh]`;
+    if (!ingredients && images.length === 0) {
+        alert('Vui lòng nhập nguyên liệu hoặc chọn ảnh');
+        return;
     }
-    addMessage('user', userMessage, currentImageBase64);
-
-    const typingId = showTypingIndicator();
-
+    
+    let userMessage = '';
+    if (ingredients) {
+        userMessage += `${ingredients}\n Hãy gợi ý món ăn phù hợp.`;
+    }
+    if (goal) {
+        userMessage += (userMessage ? '\n' : '') + `Mục tiêu: ${getGoalName(goal)}`;
+    }
+    
     try {
-        const response = await fetch(`${API_BASE}/api/recipe`, {
+        // Create thread
+        const res = await fetch(`${API_BASE}/api/create-thread`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                ingredients, 
-                goal,
-                image: currentImageBase64
-            }),
+            body: JSON.stringify({ name: ingredients || 'Image analysis' }),
             credentials: "include"
         });
-        if (!response.ok) throw new Error('API error');
-        const data = await response.json();
-        removeTypingIndicator(typingId);
-        displayAssistantResponse(data);
-
-        if (currentImageBase64) {
-            clearImagePreview();
+        
+        if (res.status === 401) {
+            alert('Bạn cần đăng nhập trước');
+            return;
         }
+        
+        const data = await res.json();
+        const threadId = data.thread_id;
+
+        if (!threadId) {
+            alert('Lỗi tạo thread');
+            return;
+        }
+
+        // Redirect to thread page immediately
+        window.location.href = `thread.html?id=${threadId}`;
+
+        // Send the message in background (with images if present)
+        const formData = new FormData();
+        formData.append("content", userMessage);
+        
+        images.forEach(file => {
+            formData.append("images", file);
+        });
+        
+        fetch(`${API_BASE}/api/thread/${threadId}/send-chat`, {
+            method: 'POST',
+            body: formData,
+            credentials: "include"
+        }).catch(err => console.error('Chat send error:', err));
+
     } catch (error) {
-        removeTypingIndicator(typingId);
-        addMessage('assistant', '❌ Lỗi kết nối, vui lòng thử lại.');
+        console.error('Error:', error);
+        alert('Lỗi kết nối server');
     }
+    // if (currentImageBase64) {
+    //     userMessage += `\n[Kèm ảnh]`;
+    // }
+    // addMessage('user', userMessage, currentImageBase64);
+
+    // const typingId = showTypingIndicator();
+
+    // try {
+    //     const response = await fetch(`${API_BASE}/api/recipe`, {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({ 
+    //             ingredients, 
+    //             goal,
+    //             image: currentImageBase64
+    //         }),
+    //         credentials: "include"
+    //     });
+    //     if (!response.ok) throw new Error('API error');
+    //     const data = await response.json();
+    //     removeTypingIndicator(typingId);
+    //     displayAssistantResponse(data);
+
+    //     if (currentImageBase64) {
+    //         clearImagePreview();
+    //     }
+    // } catch (error) {
+    //     removeTypingIndicator(typingId);
+    //     addMessage('assistant', '❌ Lỗi kết nối, vui lòng thử lại.');
+    // }
 }
 sendBtn.addEventListener('click', sendMessage);
 ingredientInput.addEventListener('keypress', (e) => e.key === 'Enter' && sendMessage());
@@ -77,36 +138,25 @@ ingredientInput.addEventListener('keypress', (e) => e.key === 'Enter' && sendMes
 scanBtn.addEventListener('click', () => imageInput.click());
 
 imageInput.addEventListener('change', async function (e) {
-    const file = e.target.files[0];
+    let files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    if (files.length > 3) {
+        alert('Bạn chỉ có thể tải lên tối đa 3 ảnh.');
+        files = files.slice(0, 3);
+        const dt = new DataTransfer();
+        files.forEach(f => dt.items.add(f));
+        imageInput.files = dt.files;
+    }
+
+    const file = files[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = async (event) => {
         const base64Full = event.target.result;
-        const base64Data = base64Full.split(',')[1];
-        currentImageBase64 = base64Data;
-
         imagePreview.src = base64Full;
         imagePreviewContainer.style.display = 'flex';
-        detectedIngredientsP.textContent = '⏳ Đang nhận diện...';
-
-        try {
-            const response = await fetch(`${API_BASE}/api/scan`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ image: base64Data }),
-                credentials: "include"
-            });
-            const data = await response.json();
-            if (data.ingredients) {
-                detectedIngredientsP.textContent = `🍎 Phát hiện: ${data.ingredients}`;
-                ingredientInput.value = data.ingredients;
-            } else {
-                detectedIngredientsP.textContent = '❌ Không nhận diện được';
-            }
-        } catch (err) {
-            detectedIngredientsP.textContent = '❌ Lỗi kết nối';
-        }
     };
     reader.readAsDataURL(file);
 });
@@ -118,24 +168,29 @@ function clearImagePreview() {
     imagePreview.src = '#';
     imageInput.value = '';
     detectedIngredientsP.textContent = '';
-    currentImageBase64 = null;
 }
-
-// ==================== CHIP GỢI Ý ====================
-leftoverChip.addEventListener('click', () => {
-    ingredientInput.value = 'trứng, cà chua, hành tây, cơm nguội';
-    sendMessage();
-});
 
 // ==================== HÀM PHỤ TRỢ ====================
 function getGoalName(goal) {
     const map = {
-        'weight-loss': 'Giảm cân (Low Carb)',
-        'muscle-gain': 'Tăng cơ (High Protein)',
+        'weight-loss': 'Giảm cân',
+        'muscle-gain': 'Tăng cơ',
         'maintenance': 'Duy trì năng lượng',
-        'vitamin-c': 'Bổ sung vitamin C'
+        'leftover': 'Nấu ăn từ các nguyên liệu thừa'
     };
     return map[goal] || goal;
+}
+
+function selectGoal(goalValue) {
+    ingredientInput.value = '';
+    currentGoal.value = goalValue;
+    goalBtns.forEach(btn => {
+        if (btn.dataset.goal === goalValue) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
 }
 
 function addMessage(sender, text, imageBase64 = null) {

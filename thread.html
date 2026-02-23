@@ -5,17 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Pantry – Thread chat</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        header {
+            flex-shrink: 0;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
         .thread-container {
-            max-width: 900px;
-            margin: 2rem auto;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
             padding: 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         .thread-header {
             display: flex;
             align-items: center;
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
+            flex-shrink: 0;
         }
         .back-link {
             color: #2e7d32;
@@ -27,10 +48,10 @@
             border-radius: 20px;
             padding: 1.5rem;
             box-shadow: 0 4px 12px rgba(0,40,0,0.08);
-            min-height: 400px;
-            max-height: 600px;
+            flex: 1;
             overflow-y: auto;
             margin-bottom: 1.5rem;
+            min-height: 300px;
         }
         .message {
             display: flex;
@@ -54,8 +75,9 @@
             background: #f0f7f0;
             padding: 0.8rem 1.2rem;
             border-radius: 20px;
-            max-width: 70%;
+            max-width: 85%;
             white-space: pre-wrap;
+            word-wrap: break-word;
         }
         .message.user .bubble {
             background: #2e7d32;
@@ -64,6 +86,8 @@
         .input-area {
             display: flex;
             gap: 1rem;
+            flex-shrink: 0;
+            margin-bottom: 1rem;
         }
         .input-area textarea {
             flex: 1;
@@ -71,6 +95,7 @@
             border: 1px solid #d0e0d0;
             border-radius: 12px;
             resize: none;
+            max-height: 100px;
         }
         .input-area button {
             background: #2e7d32;
@@ -88,6 +113,183 @@
             border-radius: 30px;
             cursor: pointer;
         }
+        #image-btn {
+            background: #e8f5e9;
+            border: none;
+            padding: 0.6rem;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .preview-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 12px;
+            position: relative;
+        }
+        #image-preview-container {
+            flex-shrink: 0;
+            margin-bottom: 1rem;
+        }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                height: 100dvh; /* Use dynamic viewport height for mobile */
+            }
+
+            .thread-container {
+                padding: 0 1rem;
+                max-width: 100%;
+            }
+
+            .thread-header {
+                margin-bottom: 0.75rem;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+            }
+
+            .thread-header h2 {
+                font-size: 1.2rem;
+                margin: 0;
+                flex: 1;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .back-link {
+                font-size: 1rem;
+            }
+
+            .messages-container {
+                border-radius: 12px;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                min-height: 200px;
+            }
+
+            .message {
+                gap: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+
+            .bubble {
+                max-width: 90%;
+                padding: 0.6rem 1rem;
+                border-radius: 16px;
+                font-size: 0.95rem;
+            }
+
+            .input-area {
+                gap: 0.5rem;
+                margin-bottom: 0.75rem;
+                flex-wrap: wrap;
+            }
+
+            .input-area textarea {
+                padding: 0.6rem;
+                border-radius: 10px;
+                font-size: 1rem; /* Prevent zoom on iOS */
+                min-height: 44px; /* Touch-friendly size */
+            }
+
+            .input-area button {
+                padding: 0.6rem 1rem;
+                min-width: 44px;
+                min-height: 44px;
+                border-radius: 10px;
+                font-size: 1rem;
+            }
+
+            #send-message-btn {
+                white-space: nowrap;
+            }
+
+            #image-btn {
+                min-width: 44px;
+                min-height: 44px;
+                padding: 0.5rem;
+                font-size: 1.2rem;
+            }
+
+            #image-preview-container {
+                gap: 0.5rem;
+                padding: 0 0.5rem;
+            }
+
+            .preview-image {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .thread-container {
+                padding: 0 0.75rem;
+            }
+
+            .thread-header {
+                margin-bottom: 0.5rem;
+            }
+
+            .thread-header h2 {
+                font-size: 1rem;
+            }
+
+            .messages-container {
+                padding: 0.75rem;
+                margin-bottom: 0.75rem;
+                border-radius: 10px;
+            }
+
+            .bubble {
+                max-width: 95%;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .input-area {
+                margin-bottom: 0.5rem;
+                gap: 0.3rem;
+            }
+
+            .input-area textarea {
+                padding: 0.5rem;
+                font-size: 1rem;
+                min-height: 40px;
+            }
+
+            .input-area button {
+                padding: 0.5rem;
+                min-width: 40px;
+                min-height: 40px;
+                font-size: 0.9rem;
+            }
+
+            #send-message-btn {
+                padding: 0.5rem 0.8rem;
+            }
+
+            #image-btn {
+                min-width: 40px;
+                min-height: 40px;
+                font-size: 1.1rem;
+            }
+
+            .preview-image {
+                width: 50px;
+                height: 50px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -103,8 +305,15 @@
             <!-- Các message sẽ được render ở đây -->
         </div>
 
+        <div id="image-preview-container" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
+
         <div class="input-area">
+            <input type="file" id="image-input" accept="image/*" multiple hidden>
+            
+            <button type="button" id="image-btn">📷</button>
+
             <textarea id="message-input" placeholder="Nhập tin nhắn..."></textarea>
+
             <button id="send-message-btn">Gửi</button>
         </div>
     </main>
@@ -117,5 +326,5 @@
     
 </body>
 <script type="module" src="main.js"></script>
-<script src="thread.js"></script>
+<script type="module" src="thread.js"></script>
 </html>

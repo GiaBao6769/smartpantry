@@ -16,7 +16,6 @@ async function loadTabs() {
         if (!response.ok) throw new Error('Failed to load tabs');
         const data = await response.json();
         const tabs = data.tabs;
-        console.log(tabs)
         renderTabs(tabs);
     } catch (error) {
         console.error('Load tabs error:', error);

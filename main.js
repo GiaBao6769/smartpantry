@@ -79,7 +79,7 @@ const closeButtons = document.querySelectorAll('.close');
                 const data = await response.json();
                 
                 if (data.user) {
-                    userGreeting.style.display = 'inline';
+                    userGreeting.style.display = 'inline-block';
                     usernameDisplay.textContent = data.user.username;
                     loginBtn.style.display = 'none';
                     registerBtn.style.display = 'none';
@@ -95,6 +95,19 @@ const closeButtons = document.querySelectorAll('.close');
             console.error('Auth check failed:', error);
         }
     }
+
+    // Make user greeting clickable to access profile
+    userGreeting.addEventListener('click', () => {
+        window.location.href = 'profile.html';
+    });
+
+    userGreeting.addEventListener('mouseenter', () => {
+        userGreeting.style.background = '#e8f5e9';
+    });
+
+    userGreeting.addEventListener('mouseleave', () => {
+        userGreeting.style.background = 'transparent';
+    });
 
     loginModal.style.display = 'none';
     registerModal.style.display = 'none';
@@ -135,14 +148,17 @@ const closeButtons = document.querySelectorAll('.close');
             if (response.ok && data.success) {
                 registerModal.style.display = 'none';
                 checkAuth();
-            } else {
+                location.reload();
+            } 
+            else {
                 if (data.errors && Array.isArray(data.errors)) {
                     alert(data.errors.join("\n"));
                 } else {
                     alert('Đăng ký thất bại');
                 }
             }
-        } catch (error) {
+        } 
+        catch (error) {
             alert('Lỗi kết nối máy chủ');
         }
     });
@@ -164,14 +180,18 @@ const closeButtons = document.querySelectorAll('.close');
             if (response.ok && data.success) {
                 loginModal.style.display = 'none';
                 checkAuth();
-            } else {
+                location.reload();
+            } 
+            else {
                 if (data.errors && Array.isArray(data.errors)) {
                     alert(data.errors.join("\n"));
-                } else {
+                } 
+                else {
                     alert('Sai tên đăng nhập hoặc mật khẩu');
                 }
             }
-        } catch (error) {
+        } 
+        catch (error) {
             alert('Lỗi kết nối máy chủ');
         }
     });
@@ -180,4 +200,5 @@ const closeButtons = document.querySelectorAll('.close');
         await fetch(`${API_BASE}/api/logout`, { method: 'POST', credentials: "include" });
         checkAuth();
     });
+    checkAuth();
 }

@@ -17,8 +17,11 @@ const blockLunch = document.getElementById('block-lunch');
 const blockDinner = document.getElementById('block-dinner');
 const submitBlock = document.getElementById('submit-block');
 const cancelBlock = document.getElementById('cancel-block');
+const aiRecommendationBtn = document.getElementById('ai-recommendation-btn');
 
 // ==================== TAB DETAIL ====================
+let currentBlocks = [];
+
 async function loadTab() {
     try {
         const response = await fetch(`${API_BASE}/api/tab/${tabId}`, 
@@ -35,10 +38,13 @@ async function loadTab() {
             });
         const blocksData = await blocksRes.json();
         const blocks = blocksData.blocks;
+        currentBlocks = blocks;
         renderBlocks(blocks);
 
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Load tab error:', error);
+        document.URL = 'handbook.html';
     }
 }
 loadTab();
@@ -251,7 +257,7 @@ submitBlock.addEventListener('click', async () => {
             credentials: "include"
         });
         if (response.status === 403) {
-            alert('Không có quyền');
+            alert('Unauthorized');
             return;
         }
         const data = await response.json();
@@ -267,5 +273,64 @@ submitBlock.addEventListener('click', async () => {
         }
     } catch (error) {
         alert('Lỗi kết nối');
+    }
+});
+
+/////////////// AI RECOMMENDATION ///////////////
+aiRecommendationBtn.addEventListener('click', async () => {
+    if (currentBlocks.length === 0) {
+        alert('Vui lòng thêm ít nhất một bữa ăn trước');
+        return;
+    }
+
+    // Format the content
+    let formattedContent = `Tab: ${tabNameEl.textContent}\n\n`;
+    currentBlocks.forEach(block => {
+        formattedContent += `${block.day_name}:\n`;
+        if (block.breakfast) formattedContent += `- Sáng: ${block.breakfast}\n`;
+        if (block.lunch) formattedContent += `- Trưa: ${block.lunch}\n`;
+        if (block.dinner) formattedContent += `- Chiều: ${block.dinner}\n`;
+        formattedContent += '\n';
+    });
+
+    formattedContent += `\nHãy đánh giá thực đơn này và đưa ra đề xuất cải thiện nếu cần thiết.`;
+
+    try {
+        const createThreadRes = await fetch(`${API_BASE}/api/create-thread`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: `AI Recommendation - ${tabNameEl.textContent}` }),
+            credentials: "include"
+        });
+
+        if (createThreadRes.status === 401) {
+            alert('Bạn cần đăng nhập trước');
+            return;
+        }
+
+        const threadData = await createThreadRes.json();
+        const threadId = threadData.thread_id;
+
+        if (!threadId) {
+            alert('Lỗi tạo thread');
+            return;
+        }
+
+        // Redirect immediately
+        window.location.href = `thread.html?id=${threadId}`;
+
+        // Send chat in background (no await)
+        const formData = new FormData();
+        formData.append('content', formattedContent);
+
+        fetch(`${API_BASE}/api/thread/${threadId}/send-chat`, {
+            method: 'POST',
+            body: formData,
+            credentials: "include"
+        }).catch(err => console.error('Chat send error:', err));
+    } 
+    catch (error) {
+        console.error('Error:', error);
+        alert('Lỗi kết nối server');
     }
 });
