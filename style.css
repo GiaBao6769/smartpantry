@@ -405,19 +405,293 @@ h1 {
     cursor: pointer;
     font-size: 0.9rem;
 }
-@media (max-width: 700px) {
+/* Tablet and small screens */
+@media (max-width: 768px) {
     .navbar {
         flex-direction: column;
-        gap: 0.8rem;
+        gap: 0.6rem;
+        padding: 0.8rem 1.2rem;
+    }
+    .logo {
+        font-size: 1.2rem;
     }
     nav a {
-        margin-left: 1rem;
-        margin-right: 1rem;
+        margin-left: 0.8rem;
+        margin-right: 0.8rem;
+        font-size: 0.85rem;
+    }
+    .container {
+        padding: 0 1rem;
+        margin: 1.5rem auto;
     }
     h1 {
         font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+    .input-group {
+        max-width: 100%;
+        margin: 0 0 1rem;
+    }
+    .input-group input {
+        padding: 0.8rem 1.2rem;
+        font-size: 0.95rem;
+    }
+    .input-group button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+    .scan-btn {
+        padding: 0.6rem 1.4rem;
+        font-size: 0.85rem;
+    }
+    .goal-selector {
+        gap: 0.6rem;
+        margin: 1rem 0;
+    }
+    .goal-label {
+        padding: 0.25rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    .goal-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    .chip {
+        padding: 0.6rem 1.4rem;
+        font-size: 0.9rem;
     }
     .bubble {
+        max-width: 90%;
+        padding: 0.8rem 1.2rem;
+        font-size: 0.95rem;
+    }
+    .avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+    .message {
+        gap: 0.6rem;
+    }
+    .nutrition-card {
+        padding: 0.8rem;
+        margin-top: 0.6rem;
+    }
+    .nutrition-row {
+        gap: 1rem;
+    }
+    .video-btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+        margin-top: 0.6rem;
+    }
+    #image-preview-container {
+        gap: 0.6rem;
+        padding: 0.6rem;
+    }
+    #image-preview {
+        max-height: 150px;
+    }
+    .hint {
+        font-size: 0.85rem;
+    }
+    .modal-content {
+        width: 95%;
+        max-width: 380px;
+        padding: 1.5rem;
+    }
+    .close {
+        font-size: 1.4rem;
+        right: 1rem;
+        top: 0.8rem;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    .form-group input {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+    }
+    .modal-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+    .error {
+        font-size: 0.85rem;
+    }
+    .auth-btn, #logout-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    .user-menu {
+        gap: 0.6rem;
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 480px) {
+    .navbar {
+        flex-direction: column;
+        gap: 0.4rem;
+        padding: 0.6rem 0.8rem;
+    }
+    .logo {
+        font-size: 1rem;
+        margin-bottom: 0.3rem;
+    }
+    nav a {
+        margin-left: 0.4rem;
+        margin-right: 0.4rem;
+        font-size: 0.75rem;
+        margin-left: 0.5rem;
+    }
+    .container {
+        padding: 0 0.8rem;
+        margin: 1rem auto;
+    }
+    h1 {
+        font-size: 1.4rem;
+        margin-bottom: 0.8rem;
+    }
+    .hero {
+        margin-bottom: 1.5rem;
+    }
+    .input-group {
         max-width: 100%;
+        margin: 0 0 0.8rem;
+    }
+    .input-group input {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 40px 0 0 40px;
+    }
+    .input-group button {
+        border-radius: 0 40px 40px 0;
+        padding: 0.7rem 1.2rem;
+        font-size: 0.95rem;
+        margin: 0;
+    }
+    .scan-area {
+        margin-top: 0.6rem;
+    }
+    .scan-btn {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.75rem;
+    }
+    .goal-selector {
+        gap: 0.4rem;
+        margin: 0.8rem 0;
+    }
+    .goal-label {
+        padding: 0.2rem 0.6rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+    .goal-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+    }
+    .chip {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        box-shadow: 0 1px 4px rgba(46,125,50,0.08);
+    }
+    .bubble {
+        max-width: 95%;
+        padding: 0.7rem 1rem;
+        font-size: 0.85rem;
+        border-radius: 16px 16px 16px 3px;
+    }
+    .message.user .bubble {
+        border-radius: 16px 16px 3px 16px;
+    }
+    .avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+    .message {
+        gap: 0.4rem;
+    }
+    .chat {
+        gap: 0.8rem;
+        margin-top: 1.5rem;
+    }
+    .nutrition-card {
+        padding: 0.6rem;
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+    }
+    .nutrition-row {
+        gap: 0.8rem;
+        margin-top: 0.4rem;
+    }
+    .nutrition-item {
+        gap: 0.3rem;
+        font-size: 0.8rem;
+    }
+    .video-btn {
+        padding: 0.35rem 0.8rem;
+        font-size: 0.8rem;
+        margin-top: 0.4rem;
+    }
+    #image-preview-container {
+        gap: 0.4rem;
+        padding: 0.5rem;
+    }
+    #image-preview {
+        max-height: 120px;
+    }
+    #clear-image-btn {
+        font-size: 1rem;
+    }
+    .hint {
+        font-size: 0.75rem;
+        color: #666;
+    }
+    .modal {
+        z-index: 1000;
+    }
+    .modal-content {
+        width: 96%;
+        max-width: 320px;
+        padding: 1.2rem;
+    }
+    .close {
+        font-size: 1.2rem;
+        right: 0.8rem;
+        top: 0.6rem;
+    }
+    .form-group {
+        margin-bottom: 0.8rem;
+    }
+    .form-group label {
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem;
+    }
+    .form-group input {
+        padding: 0.5rem 0.7rem;
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
+    .modal-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+        gap: 0.3rem;
+    }
+    .error {
+        font-size: 0.75rem;
+        margin: 0.3rem 0;
+    }
+    .auth-btn, #logout-btn {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.75rem;
+    }
+    .user-menu {
+        gap: 0.4rem;
     }
 }

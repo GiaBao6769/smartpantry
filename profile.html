@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Pantry – Profile</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .profile-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .back-link {
+            color: #2e7d32;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,40,0,0.08);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .profile-section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e0f0e0;
+        }
+        .profile-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .profile-section h3 {
+            font-size: 1.2rem;
+            color: #1b3b1b;
+            margin-bottom: 1rem;
+        }
+        .profile-info {
+            background: #f0f7f0;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .profile-info-label {
+            font-weight: 600;
+            color: #2e7d32;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+        .profile-info-value {
+            color: #1a2e1a;
+            font-size: 1.1rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1b3b1b;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #d0e0d0;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+        .btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #1e5a22;
+        }
+        .btn-secondary {
+            background: #fff0e0;
+            color: #b45f2e;
+            border: 1px solid #ffb57c;
+        }
+        .btn-secondary:hover {
+            background: #ffe4cc;
+        }
+        .btn-danger {
+            background: #d32f2f;
+        }
+        .btn-danger:hover {
+            background: #b71c1c;
+        }
+        .error {
+            color: #d32f2f;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+        .success {
+            color: #2e7d32;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .delete-warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 12px;
+            border-left: 4px solid #d32f2f;
+            margin-bottom: 1rem;
+        }
+        .delete-warning p {
+            margin: 0;
+            color: #b71c1c;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                padding: 0 1rem;
+            }
+            .profile-card {
+                padding: 1.5rem;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+        .btn {
+            background: linear-gradient(135deg, #2e7d32, #1e5a22);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(46, 125, 50, 0.35);
+        }
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #e0e0e0, #d0d0d0);
+            color: #333;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #d0d0d0, #c0c0c0);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .btn-main {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.25);
+        }
+        .btn-main:hover {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.35);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #d32f2f, #c62828);
+            color: white;
+            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.25);
+        }
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c62828, #b71c1c);
+            box-shadow: 0 8px 20px rgba(211, 47, 47, 0.35);
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar"></header>
+
+    <main class="profile-container">
+        <div class="profile-header">
+            <a href="index.html" class="back-link">← Quay lại</a>
+            <h2>👤 Hồ sơ cá nhân</h2>
+        </div>
+
+        <div class="profile-card">
+            <!-- User Info Section -->
+            <div class="profile-section">
+                <h3>Thông tin tài khoản</h3>
+                <div class="profile-info">
+                    <div class="profile-info-label">Tên đăng nhập</div>
+                    <div class="profile-info-value" id="username-display">-</div>
+                </div>
+                <div class="form-group">
+                    <label for="new-username">Tên đăng nhập mới</label>
+                    <input type="text" id="new-username" placeholder="Nhập tên đăng nhập mới">
+                    <div id="rename-error" class="error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="rename-password">Mật khẩu xác nhận</label>
+                    <input type="password" id="rename-password" placeholder="Nhập mật khẩu của bạn">
+                    <div id="rename-password-error" class="error"></div>
+                </div>
+                <button id="rename-btn" class="btn">Đổi tên đăng nhập</button>
+                <div id="rename-message"></div>
+            </div>
+
+            <!-- Change Password Section -->
+            <div class="profile-section">
+                <h3>🔐 Đổi mật khẩu</h3>
+                <div class="form-group">
+                    <label for="old-password">Mật khẩu hiện tại</label>
+                    <input type="password" id="old-password" placeholder="Nhập mật khẩu hiện tại">
+                    <div id="old-password-error" class="error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">Mật khẩu mới</label>
+                    <input type="password" id="new-password" placeholder="Nhập mật khẩu mới (tối thiểu 8 ký tự)">
+                    <div id="new-password-error" class="error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Xác nhận mật khẩu</label>
+                    <input type="password" id="confirm-password" placeholder="Xác nhận mật khẩu mới">
+                    <div id="confirm-password-error" class="error"></div>
+                </div>
+                <button id="change-password-btn" class="btn">Đổi mật khẩu</button>
+                <div id="change-password-message"></div>
+            </div>
+
+            <!-- Delete Account Section -->
+            <div class="profile-section">
+                <h3>⚠️ Xóa tài khoản</h3>
+                <div class="delete-warning">
+                    <p>⚠️ <strong>Cảnh báo:</strong> Xóa tài khoản sẽ xóa vĩnh viễn tất cả dữ liệu của bạn bao gồm threads, tabs, và tất cả nội dung khác. Hành động này không thể hoàn tác.</p>
+                </div>
+                <div class="form-group">
+                    <label for="delete-password">Nhập mật khẩu để xác nhận xóa</label>
+                    <input type="password" id="delete-password" placeholder="Nhập mật khẩu của bạn">
+                    <div id="delete-password-error" class="error"></div>
+                </div>
+                <button id="delete-account-btn" class="btn btn-danger">🗑️ Xóa tài khoản vĩnh viễn</button>
+                <div id="delete-account-message"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal"></div>
+    <div id="register-modal" class="modal"></div>
+</body>
+
+<script type="module" src="main.js"></script>
+<script type="module" src="profile.js"></script>
+</html>

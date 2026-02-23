@@ -18,9 +18,73 @@ const blockDinner = document.getElementById('block-dinner');
 const submitBlock = document.getElementById('submit-block');
 const cancelBlock = document.getElementById('cancel-block');
 const aiRecommendationBtn = document.getElementById('ai-recommendation-btn');
+const setMainTabBtn = document.getElementById('set-main-tab-btn');
 
 // ==================== TAB DETAIL ====================
 let currentBlocks = [];
+let mainTabId = null;
+
+// Get today's date in YYYY-MM-DD format
+function getTodayDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+async function loadMainTabStatus() {
+    try {
+        const res = await fetch(`${API_BASE}/api/main-tab`, { credentials: "include" });
+        const data = await res.json();
+        mainTabId = data.main_tab_id;
+        
+        // Show set main tab button if this tab has blocks
+        if (currentBlocks.length > 0) {
+            setMainTabBtn.style.display = 'inline-block';
+            
+            if (mainTabId === parseInt(tabId)) {
+                setMainTabBtn.textContent = '⭐ Tab chính';
+                setMainTabBtn.disabled = false;
+            } else {
+                setMainTabBtn.textContent = '☆ Đặt làm tab chính';
+                setMainTabBtn.disabled = false;
+            }
+        } else {
+            setMainTabBtn.style.display = 'none';
+        }
+    } catch (error) {
+        console.error('Load main tab status error:', error);
+    }
+}
+
+async function setMainTab() {
+    try {
+        // Toggle: if it's already the main tab, unset it; otherwise, set it
+        const newTabId = mainTabId === parseInt(tabId) ? null : parseInt(tabId);
+        
+        const res = await fetch(`${API_BASE}/api/main-tab/set`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tabId: newTabId }),
+            credentials: "include"
+        });
+        
+        if (res.ok) {
+            if (newTabId === null) {
+                alert('✅ Đã bỏ chọn tab chính!');
+            } else {
+                alert('✅ Đặt tab chính thành công!');
+            }
+            loadMainTabStatus();
+        } else {
+            alert('Lỗi cập nhật tab chính');
+        }
+    } catch (error) {
+        console.error('Set main tab error:', error);
+        alert('Lỗi kết nối');
+    }
+}
 
 async function loadTab() {
     try {
@@ -40,6 +104,7 @@ async function loadTab() {
         const blocks = blocksData.blocks;
         currentBlocks = blocks;
         renderBlocks(blocks);
+        loadMainTabStatus();
 
     } 
     catch (error) {
@@ -49,41 +114,101 @@ async function loadTab() {
 }
 loadTab();
 
-function renderBlocks(blocks) {
+async function renderBlocks(blocks) {
     blocksList.innerHTML = '';
+    const todayDate = getTodayDate();
+    let todayBlockIndex = -1;
 
-    blocks.forEach(block => {
+    for (let idx = 0; idx < blocks.length; idx++) {
+        const block = blocks[idx];
         const card = document.createElement('div');
         card.className = 'block-card';
         card.dataset.blockId = block.id;
 
-    card.innerHTML = `
-        <div class="block-day" style="display:flex; justify-content:space-between; align-items:center;">
-            <div class="day-name"><span>${escapeHtml(block.day_name)}</span></div>
+        // Check if this is today's block (matching date pattern or day name)
+        const isToday = block.day_name.toLowerCase().includes('hôm nay') || 
+                       block.day_name.toLowerCase().includes('today') ||
+                       idx === 0; // Simple heuristic: first block might be today
+        
+        if (isToday) {
+            card.classList.add('today-block');
+            todayBlockIndex = idx;
+        }
 
-            <div style="display:flex; gap:0.5rem;">
-                <button class="btn btn-secondary edit-btn">✏️ Sửa</button>
-                <button class="btn btn-secondary delete-btn">🗑 Xóa</button>
+        // Load meal tracking data for this block
+        let mealTracking = { breakfast_done: 0, lunch_done: 0, dinner_done: 0 };
+        if (isToday) {
+            try {
+                const trackRes = await fetch(`${API_BASE}/api/meal-tracking/${todayDate}`, 
+                    { credentials: "include" });
+                if (trackRes.ok) {
+                    mealTracking = await trackRes.json();
+                }
+            } catch (error) {
+                console.error('Load meal tracking error:', error);
+            }
+        }
+
+        const breakfastMealClass = mealTracking.breakfast_done ? 'meal-completed' : '';
+        const lunchMealClass = mealTracking.lunch_done ? 'meal-completed' : '';
+        const dinnerMealClass = mealTracking.dinner_done ? 'meal-completed' : '';
+
+        let mealCheckboxesHTML = '';
+        if (isToday && mainTabId === parseInt(tabId)) {
+            // Only show checkboxes for today's block of the main tab
+            mealCheckboxesHTML = `
+                <div class="meal-tracking">
+                    <strong>Theo dõi hôm nay:</strong><br>
+                    <label style="margin-right: 1rem;">
+                        <input type="checkbox" class="meal-checkbox" data-meal="breakfast" ${mealTracking.breakfast_done ? 'checked' : ''}>
+                        Sáng ✓
+                    </label>
+                    <label style="margin-right: 1rem;">
+                        <input type="checkbox" class="meal-checkbox" data-meal="lunch" ${mealTracking.lunch_done ? 'checked' : ''}>
+                        Trưa ✓
+                    </label>
+                    <label>
+                        <input type="checkbox" class="meal-checkbox" data-meal="dinner" ${mealTracking.dinner_done ? 'checked' : ''}>
+                        Tối ✓
+                    </label>
+                </div>
+            `;
+        }
+
+        card.innerHTML = `
+            <div class="block-day" style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="day-name"><span>${escapeHtml(block.day_name)}</span></div>
+
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="btn btn-secondary edit-btn">✏️ Sửa</button>
+                    <button class="btn btn-secondary delete-btn">🗑 Xóa</button>
+                </div>
             </div>
-        </div>
 
-        <div class="meal-item">
-            <span class="meal-label">Sáng:</span>
-            <div class="ingredient-list">${formatIngredients(block.breakfast)}</div>
-        </div>
+            <div class="meal-item ${breakfastMealClass}">
+                <span class="meal-label">Sáng:</span>
+                <div class="ingredient-list">${formatIngredients(block.breakfast)}</div>
+            </div>
 
-        <div class="meal-item">
-            <span class="meal-label">Trưa:</span>
-            <div class="ingredient-list">${formatIngredients(block.lunch)}</div>
-        </div>
+            <div class="meal-item ${lunchMealClass}">
+                <span class="meal-label">Trưa:</span>
+                <div class="ingredient-list">${formatIngredients(block.lunch)}</div>
+            </div>
 
-        <div class="meal-item">
-            <span class="meal-label">Tối:</span>
-            <div class="ingredient-list">${formatIngredients(block.dinner)}</div>
-        </div>
-    `;
+            <div class="meal-item ${dinnerMealClass}">
+                <span class="meal-label">Tối:</span>
+                <div class="ingredient-list">${formatIngredients(block.dinner)}</div>
+            </div>
+
+            ${mealCheckboxesHTML}
+        `;
 
         blocksList.appendChild(card);
+    }
+
+    // Add event listeners for meal checkboxes
+    document.querySelectorAll('.meal-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', saveMealTracking);
     });
 
     document.querySelectorAll('.edit-btn').forEach(btn => {
@@ -93,6 +218,47 @@ function renderBlocks(blocks) {
     document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', deleteBlock);
     });
+}
+
+async function saveMealTracking(e) {
+    const todayDate = getTodayDate();
+    const mealCheckboxes = document.querySelectorAll('.meal-checkbox');
+    
+    const breakfastDone = document.querySelector('[data-meal="breakfast"]')?.checked ? 1 : 0;
+    const lunchDone = document.querySelector('[data-meal="lunch"]')?.checked ? 1 : 0;
+    const dinnerDone = document.querySelector('[data-meal="dinner"]')?.checked ? 1 : 0;
+
+    try {
+        const res = await fetch(`${API_BASE}/api/meal-tracking/save`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                date: todayDate,
+                breakfast_done: breakfastDone,
+                lunch_done: lunchDone,
+                dinner_done: dinnerDone
+            }),
+            credentials: "include"
+        });
+
+        if (res.ok) {
+            // Update visual state
+            const breakfastItem = document.querySelector('.meal-item:has([data-meal="breakfast"])');
+            const lunchItem = document.querySelector('.meal-item:has([data-meal="lunch"])');
+            const dinnerItem = document.querySelector('.meal-item:has([data-meal="dinner"])');
+
+            if (breakfastDone) breakfastItem?.classList.add('meal-completed');
+            else breakfastItem?.classList.remove('meal-completed');
+
+            if (lunchDone) lunchItem?.classList.add('meal-completed');
+            else lunchItem?.classList.remove('meal-completed');
+
+            if (dinnerDone) dinnerItem?.classList.add('meal-completed');
+            else dinnerItem?.classList.remove('meal-completed');
+        }
+    } catch (error) {
+        console.error('Save meal tracking error:', error);
+    }
 }
 
 async function editBlock(e) {
@@ -230,6 +396,9 @@ function formatIngredients(mealStr) {
         }
     }).join(' ');
 }
+
+// Set main tab button
+setMainTabBtn.addEventListener('click', setMainTab);
 
 showAddBlockBtn.addEventListener('click', () => {
     addBlockForm.style.display = 'block';
