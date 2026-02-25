@@ -17,7 +17,7 @@ let mainTabId = null;
 function generateDateRange() {
     const dates = [];
     const start = new Date(2026, 0, 1); // Jan 1, 2026
-    const end = new Date(2026, 11, 31); // Dec 31, 2026
+    const end = new Date(2026, 2, 31); // Dec 31, 2026
     
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
         const year = d.getFullYear();
@@ -55,11 +55,9 @@ async function loadAndDisplayHeatmap() {
         
         // Show heatmap section if there's any data
         const hasData = Object.values(heatmap).some(v => v > 0);
-        heatmapSection.style.display = hasData ? 'block' : 'none';
         
     } catch (error) {
         console.error('Load heatmap error:', error);
-        heatmapSection.style.display = 'none';
     }
 }
 
