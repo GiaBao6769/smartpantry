@@ -13,6 +13,9 @@ const imagePreview = document.getElementById('image-preview');
 const clearImageBtn = document.getElementById('clear-image-btn');
 const detectedIngredientsP = document.getElementById('detected-ingredients');
 
+const sendLoader = document.getElementById("send-loader");
+const sendBtnContent = document.getElementById("send-btn-content");
+
 
 // ==================== STATE ====================
 // (No state needed)
@@ -131,7 +134,18 @@ async function sendMessage() {
     //     addMessage('assistant', '❌ Lỗi kết nối, vui lòng thử lại.');
     // }
 }
-sendBtn.addEventListener('click', sendMessage);
+sendBtn.addEventListener('click', async function (e) {
+    sendLoader.classList.remove("hidden");
+    sendBtnContent.classList.add("hidden");
+
+    try {
+        await sendMessage();
+    } finally {
+        sendLoader.classList.add("hidden");
+        sendBtnContent.classList.remove("hidden");
+    }
+});
+
 ingredientInput.addEventListener('keypress', (e) => e.key === 'Enter' && sendMessage());
 
 // ==================== SCAN ẢNH ====================

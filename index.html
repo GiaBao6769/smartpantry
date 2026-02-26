@@ -11,11 +11,15 @@
 
     <main class="container">
         <div class="hero">
-            <h1>What do you want to make today?</h1>
+            <h1>Hãy nhập món bạn muốn nấu hôm nay!</h1>
             <div class="input-group">
                 <input type="text" id="ingredient-input" placeholder="VD: gà, trứng, khoai tây,..." value="cơm, thịt bò, cà chua">
-                <button id="send-btn">→</button>
+                <button id="send-btn">
+                    <p id="send-btn-content">→</p>
+                    <div id="send-loader" class="loader hidden"></div>
+                </button>
             </div>
+
             <div class="scan-area">
                 <button id="scan-btn" class="scan-btn">📷 Chụp ảnh tủ lạnh / hoá đơn</button>
                 <input type="file" id="image-input" accept="image/*" capture="environment" style="display: none;">
@@ -25,6 +29,7 @@
                     <p id="detected-ingredients"></p>
                 </div>
             </div>
+
             <div class="goal-selector">
                 <span class="goal-label">🎯 Mục tiêu:</span>
                 <button class="goal-btn" data-goal="weight-loss">Giảm cân</button>

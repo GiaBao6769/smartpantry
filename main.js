@@ -63,6 +63,10 @@ const registerBtn = document.getElementById('register-btn');
 const logoutBtn = document.getElementById('logout-btn');
 const loginModal = document.getElementById('login-modal');
 const registerModal = document.getElementById('register-modal');
+const loginLoader = document.getElementById("login-loader");
+const registerLoader = document.getElementById("register-loader");
+const loginLoaderContent = document.getElementById("login-loader-content");
+const registerLoaderContent = document.getElementById("register-loader-content");
 const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
 const loginError = document.getElementById('login-error');
@@ -115,6 +119,7 @@ const closeButtons = document.querySelectorAll('.close');
     loginBtn.addEventListener('click', () => {
         if (loginModal) loginModal.style.display = 'flex';
     });
+
     registerBtn.addEventListener('click', () => {
         if (registerModal) registerModal.style.display = 'flex';
     });
@@ -137,6 +142,7 @@ const closeButtons = document.querySelectorAll('.close');
         const username = formData.get('username');
         const password = formData.get('password');
         registerError.textContent = '';
+        registerLoader.classList.remove("hidden");
         try {
             const response = await fetch(`${API_BASE}/api/register`, {
                 method: 'POST',
@@ -161,6 +167,7 @@ const closeButtons = document.querySelectorAll('.close');
         catch (error) {
             alert('Lỗi kết nối máy chủ');
         }
+        registerLoader.classList.add("hidden");
     });
 
     loginForm.addEventListener('submit', async (e) => {
@@ -169,6 +176,7 @@ const closeButtons = document.querySelectorAll('.close');
         const username = formData.get('username');
         const password = formData.get('password');
         loginError.textContent = '';
+        loginLoader.classList.remove("hidden");
         try {
             const response = await fetch(`${API_BASE}/api/login`, {
                 method: 'POST',
@@ -194,6 +202,7 @@ const closeButtons = document.querySelectorAll('.close');
         catch (error) {
             alert('Lỗi kết nối máy chủ');
         }
+        loginLoader.classList.add("hidden");
     });
 
     logoutBtn.addEventListener('click', async () => {

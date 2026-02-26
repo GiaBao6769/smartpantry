@@ -5,8 +5,8 @@
 <template id="NAVBAR-TEMP">
     <div class="logo"><a href="index.html">🌿 Smart Pantry</a></div>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="handbook.html">Handbook</a>
+        <a href="index.html">Trang chủ</a>
+        <a href="handbook.html">Cẩm nang</a>
         <a href="chatbot.html">Chatbot</a>
         <!-- <a href="#">Features</a>
         <a href="#">Generate images</a>
@@ -37,7 +37,10 @@
                 <input type="password" name="password" required>
             </div>
             <div id="login-error" class="error"></div>
-            <button type="submit" class="modal-button">Đăng nhập</button>
+            <button type="submit" class="modal-button">
+                <p id="login-loader-content" class="loader-content">Đăng nhập</p>
+                <div id="login-loader" class="loader hidden"></div>
+            </button>
         </form>
     </div>
 </template>
@@ -57,7 +60,10 @@
                 <input type="password" name="password" minlength="8" maxlength="50" required>
             </div>
             <div id="register-error" class="error"></div>
-            <button type="submit" class="modal-button">Đăng ký</button>
+            <button type="submit" class="modal-button">
+                <p id="register-loader-content" class="loader-content">Đăng ký</p>
+                <div id="register-loader" class="loader hidden"></div>
+            </button>
         </form>
     </div>
 </template>

@@ -532,6 +532,27 @@ h1 {
     }
 }
 
+
+.loader {
+  width: 1rem;
+  height: 1rem;
+  border: 5px solid #ddd;
+  border-top: 5px solid #2e7d32;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-top: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Mobile devices */
 @media (max-width: 480px) {
     .navbar {
